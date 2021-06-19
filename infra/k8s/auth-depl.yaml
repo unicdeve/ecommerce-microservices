@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: unicdev/auth
+          image: us.gcr.io/ticketing-dev-317313/auth
 
 ---
 apiVersion: v1
