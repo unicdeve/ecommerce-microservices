@@ -1,6 +1,7 @@
 import express, { Response, Request } from 'express';
 import { body, validationResult } from 'express-validator';
 import { RequestValidationError } from '../errs/request-validation-err';
+import { User } from '../models/user';
 
 const router = express.Router();
 
@@ -13,7 +14,7 @@ router.post(
 			.isLength({ min: 4, max: 20 })
 			.withMessage('Password must be between 4 and 20'),
 	],
-	(req: Request, res: Response) => {
+	async (req: Request, res: Response) => {
 		const errors = validationResult(req);
 
 		if (!errors.isEmpty()) {
@@ -22,7 +23,18 @@ router.post(
 
 		const { email, password } = req.body;
 
-		res.send({ email, password });
+		const existingUser = await User.findOne({ email });
+
+		if (existingUser) {
+			console.log('Email in use!');
+			return res.send({});
+		}
+
+		const newUser = User.build({ email, password });
+
+		await newUser.save();
+
+		res.status(201).send(newUser);
 	}
 );
 
