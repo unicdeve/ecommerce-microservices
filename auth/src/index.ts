@@ -7,10 +7,19 @@ import { signOutRouter } from './routes/signout';
 import { errHandler } from './middlewares/err-handler';
 import { NotFoundError } from './errs/not-found-err';
 import mongoose from 'mongoose';
+import cookieSession from 'cookie-session';
 
 const app = express();
 
+app.set('trust proxy', true);
+
 app.use(json());
+app.use(
+	cookieSession({
+		signed: false,
+		secure: true,
+	})
+);
 
 app.use(currentUserRouter);
 app.use(signUpRouter);
