@@ -38,10 +38,10 @@ router.post(
 		// Generate JWT
 		const userJwt = jwt.sign(
 			{
-				id: newUser.id,
+				id: newUser._id,
 				email: newUser.email,
 			},
-			'somekeyjkhkj'
+			'somekey'
 		);
 
 		// store on session
