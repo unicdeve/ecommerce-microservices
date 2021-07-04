@@ -28,7 +28,6 @@ kind: Service
 metadata:
   name: auth-srv
 spec:
-  type: ClusterIP
   selector:
     app: auth
   ports:
