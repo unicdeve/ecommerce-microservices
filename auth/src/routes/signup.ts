@@ -41,7 +41,7 @@ router.post(
 				id: newUser._id,
 				email: newUser.email,
 			},
-			'somekey'
+			process.env.JWT_KEY!
 		);
 
 		// store on session
