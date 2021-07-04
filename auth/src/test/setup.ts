@@ -4,8 +4,10 @@ import mongoose from 'mongoose';
 
 let mongo: any;
 beforeAll(async () => {
+	process.env.JWT_KEY = 'snkjnkj';
 	mongo = new MongoMemoryServer();
-	const mongoUri = await mongo.getUri();
+	await mongo.start();
+	const mongoUri = mongo.getUri();
 
 	await mongoose.connect(mongoUri, {
 		useNewUrlParser: true,
