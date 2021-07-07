@@ -6,7 +6,7 @@ it('successfully sign out', async () => {
 		.post('/api/users/signup')
 		.send({
 			password: 'password',
-			email: 'test@test.org',
+			email: 'test@test.com',
 		})
 		.expect(201);
 
