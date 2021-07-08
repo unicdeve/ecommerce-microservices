@@ -1,10 +1,7 @@
-import axios from 'axios';
 import buildClient from '../api/build-client';
 
 function Home({ currentUser }) {
 	console.log('on browser', currentUser);
-
-	// axios.get('/api/users/current-user').catch((err) => {});
 
 	return currentUser ? (
 		<div>
