@@ -3,6 +3,7 @@ import axios from 'axios';
 
 const Signup = () => {
 	const [values, setValues] = useState({ email: '', password: '' });
+	const [errors, setErrors] = useState([]);
 
 	const { email, password } = values;
 
@@ -12,9 +13,12 @@ const Signup = () => {
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		const res = await axios.post('/api/users/signup', values);
-
-		console.log(res.data);
+		try {
+			const res = await axios.post('/api/users/signup', values);
+			console.log(res.data);
+		} catch (e) {
+			setErrors(e.response.data.errors);
+		}
 	};
 
 	return (
@@ -42,6 +46,17 @@ const Signup = () => {
 					onChange={onChange}
 				/>
 			</div>
+
+			{errors.length > 0 && (
+				<div className='alert alert-danger'>
+					<h4>Ooops...</h4>
+					<ul>
+						{errors.map((err) => (
+							<li key={err.message}>err.message</li>
+						))}
+					</ul>
+				</div>
+			)}
 
 			<button className='btn btn-primary mt-3'>Sign up</button>
 		</form>
