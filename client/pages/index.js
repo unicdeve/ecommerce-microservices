@@ -6,9 +6,13 @@ function Home({ currentUser }) {
 
 	// axios.get('/api/users/current-user').catch((err) => {});
 
-	return (
+	return currentUser ? (
 		<div>
-			<h1>Home page 00</h1>
+			<h1>You are signed in</h1>
+		</div>
+	) : (
+		<div>
+			<h1>You are not logged in</h1>
 		</div>
 	);
 }
