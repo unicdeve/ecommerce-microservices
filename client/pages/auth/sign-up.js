@@ -1,17 +1,19 @@
 import { useRequest } from '../../hooks/use-request';
+import router from 'next/router';
 
 const Signup = () => {
 	const { values, errors, onChange, doRequest } = useRequest({
 		url: '/api/users/signup',
 		method: 'post',
 		initialState: { email: '', password: '' },
+		onSuccess: (data) => router.push('/'),
 	});
 
 	const { email, password } = values;
 
-	const onSubmit = (e) => {
+	const onSubmit = async (e) => {
 		e.preventDefault();
-		doRequest();
+		await doRequest();
 	};
 
 	return (

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 
-export const useRequest = ({ url, method, initialState }) => {
+export const useRequest = ({ url, method, initialState, onSuccess }) => {
 	const [values, setValues] = useState(initialState);
 	const [errors, setErrors] = useState(null);
 
@@ -13,6 +13,7 @@ export const useRequest = ({ url, method, initialState }) => {
 		try {
 			const res = await axios[method](url, values);
 			setErrors(null);
+			onSuccess && onSuccess(res.data);
 			return res.data;
 		} catch (e) {
 			setErrors(
