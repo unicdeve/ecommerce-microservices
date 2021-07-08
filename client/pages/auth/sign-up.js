@@ -1,24 +1,17 @@
-import { useState } from 'react';
-import axios from 'axios';
+import { useRequest } from '../../hooks/use-request';
 
 const Signup = () => {
-	const [values, setValues] = useState({ email: '', password: '' });
-	const [errors, setErrors] = useState([]);
+	const { values, errors, onChange, doRequest } = useRequest({
+		url: '/api/users/signup',
+		method: 'post',
+		initialState: { email: '', password: '' },
+	});
 
 	const { email, password } = values;
 
-	const onChange = (e) => {
-		setValues({ ...values, [e.target.name]: e.target.value });
-	};
-
-	const onSubmit = async (e) => {
+	const onSubmit = (e) => {
 		e.preventDefault();
-		try {
-			const res = await axios.post('/api/users/signup', values);
-			console.log(res.data);
-		} catch (e) {
-			setErrors(e.response.data.errors);
-		}
+		doRequest();
 	};
 
 	return (
@@ -47,17 +40,7 @@ const Signup = () => {
 				/>
 			</div>
 
-			{errors.length > 0 && (
-				<div className='alert alert-danger'>
-					<h4>Ooops...</h4>
-					<ul>
-						{errors.map((err) => (
-							<li key={err.message}>err.message</li>
-						))}
-					</ul>
-				</div>
-			)}
-
+			{errors}
 			<button className='btn btn-primary mt-3'>Sign up</button>
 		</form>
 	);
