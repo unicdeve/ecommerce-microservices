@@ -1,4 +1,5 @@
 import axios from 'axios';
+import buildClient from '../api/build-client';
 
 function Home({ currentUser }) {
 	console.log('on browser', currentUser);
@@ -12,31 +13,14 @@ function Home({ currentUser }) {
 	);
 }
 
-Home.getInitialProps = async ({ req }) => {
-	if (typeof window === 'undefined') {
-		const { data } = await axios
-			.get(
-				'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/current-user',
-				{
-					headers: req.headers,
-				}
-			)
-			.catch((err) => {
-				console.log(err.response.data);
-			});
+Home.getInitialProps = async (context) => {
+	const client = buildClient(context);
 
-		return data;
-	} else {
-		const res = await axios.get('/api/users/current-user').catch((err) => {
-			console.log(err.response.data);
-		});
+	const { data } = await client.get('/api/users/current-user').catch((err) => {
+		console.log(err.response.data);
+	});
 
-		return res.data;
-	}
-
-	console.log('Executed!!!');
-
-	return {};
+	return data;
 };
 
 export default Home;
