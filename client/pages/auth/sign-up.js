@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import axios from 'axios';
 
 const Signup = () => {
 	const [values, setValues] = useState({ email: '', password: '' });
@@ -9,9 +10,11 @@ const Signup = () => {
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 
-	const onSubmit = (e) => {
+	const onSubmit = async (e) => {
 		e.preventDefault();
-		console.log(values);
+		const res = await axios.post('/api/users/signup', values);
+
+		console.log(res.data);
 	};
 
 	return (
