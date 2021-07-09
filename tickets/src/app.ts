@@ -1,7 +1,8 @@
 import express, { json } from 'express';
 import 'express-async-errors';
-import { errHandler, NotFoundError } from '@unicdeve/common';
+import { errHandler, NotFoundError, currentUser } from '@unicdeve/common';
 import cookieSession from 'cookie-session';
+import { createTicketRouter } from './routes/new';
 
 const app = express();
 
@@ -14,6 +15,10 @@ app.use(
 		secure: process.env.NODE_ENV !== 'test',
 	})
 );
+
+app.use(currentUser);
+
+app.use(createTicketRouter);
 
 app.all('*', async () => {
 	throw new NotFoundError();
