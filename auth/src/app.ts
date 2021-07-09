@@ -4,8 +4,8 @@ import { currentUserRouter } from './routes/current-user';
 import { signUpRouter } from './routes/signup';
 import { signInRouter } from './routes/signin';
 import { signOutRouter } from './routes/signout';
-import { errHandler } from './middlewares/err-handler';
-import { NotFoundError } from './errs/not-found-err';
+import { errHandler } from '@unicdeve/common';
+import { NotFoundError } from '@unicdeve/common';
 import cookieSession from 'cookie-session';
 
 const app = express();
