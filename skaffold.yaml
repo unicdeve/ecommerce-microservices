@@ -27,3 +27,12 @@ build:
         manual:
           - dest: .
             src: '**/*.js'
+
+    - image: unicdev/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.js'
