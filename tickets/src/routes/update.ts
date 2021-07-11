@@ -31,14 +31,14 @@ router.put(
 			throw new NotAuthorizedError();
 		}
 
-		// const newTicket = Ticket.build({
-		// 	title,
-		// 	price,
-		// 	userId: req.currentUser!.id,
-		// });
-		// await newTicket.save();
+		ticket.set({
+			title,
+			price,
+		});
 
-		// res.status(201).send(newTicket);
+		await ticket.save();
+
+		res.send(ticket);
 	}
 );
 
