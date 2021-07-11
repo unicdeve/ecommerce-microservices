@@ -61,4 +61,15 @@ it('returns error if invalid title is given', async () => {
 		.expect(400);
 });
 
-it('creates a ticket if valid params are provided', async () => {});
+it('creates a ticket if valid params are provided', async () => {
+	// TODO: check if created Ticket is saved to the mongo document
+	const cookie = global.signin();
+	await request(app)
+		.post('/api/tickets')
+		.set('Cookie', cookie)
+		.send({
+			title: 'some title',
+			price: 10,
+		})
+		.expect(201);
+});
