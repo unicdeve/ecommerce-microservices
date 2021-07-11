@@ -4,6 +4,7 @@ import { errHandler, NotFoundError, currentUser } from '@unicdeve/common';
 import cookieSession from 'cookie-session';
 import { createTicketRouter } from './routes/new';
 import { showTicketRouter } from './routes/show';
+import { indexTicketRouter } from './routes';
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(
 
 app.use(currentUser);
 
+app.use(indexTicketRouter);
 app.use(createTicketRouter);
 app.use(showTicketRouter);
 
