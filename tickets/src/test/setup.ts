@@ -41,7 +41,7 @@ afterAll(async () => {
 global.signin = () => {
 	const payload = {
 		email: 'test@test.com',
-		password: 'kjhkjhkjds',
+		id: 'some id',
 	};
 
 	const token = jwt.sign(payload, process.env.JWT_KEY!);

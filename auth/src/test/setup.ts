@@ -37,7 +37,7 @@ afterAll(async () => {
 	await mongo.stop();
 });
 
-global.signin = async () => {
+global.signin = async (): Promise<string[]> => {
 	const email = 'test@test.com';
 	const password = 'password';
 
