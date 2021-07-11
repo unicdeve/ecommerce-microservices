@@ -1,4 +1,4 @@
-import { NotFoundError, requireAuth } from '@unicdeve/common';
+import { NotFoundError } from '@unicdeve/common';
 import express, { Request, Response } from 'express';
 import { Ticket } from '../models/ticket';
 
