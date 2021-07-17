@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 // required to create a new Ticket
 interface TicketAttrs {
 	title: string;
-	price: string;
+	price: number;
 	userId: string;
 }
 
@@ -12,7 +12,7 @@ interface TicketAttrs {
 // that a Ticket Document has
 interface TicketDoc extends mongoose.Document {
 	title: string;
-	price: string;
+	price: number;
 	userId: string;
 }
 
