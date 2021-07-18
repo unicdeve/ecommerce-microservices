@@ -1,14 +1,15 @@
 import mongoose from 'mongoose';
+import { OrderStatus } from '@unicdeve/common';
 
 interface OrderAttrs {
-	status: string;
+	status: OrderStatus;
 	userId: string;
 	expiresAt: Date;
 	// ticket: TicketDoc;
 }
 
 interface OrderDoc extends mongoose.Document {
-	status: string;
+	status: OrderStatus;
 	userId: string;
 	expiresAt: Date;
 	// ticket: TicketDoc;
@@ -28,6 +29,8 @@ const OrderSchema = new mongoose.Schema(
 		status: {
 			type: String,
 			required: true,
+			enum: Object.values(OrderStatus),
+			default: OrderStatus.Created,
 		},
 
 		expires: {
