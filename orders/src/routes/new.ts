@@ -10,6 +10,8 @@ import express, { Request, Response } from 'express';
 import { Ticket } from '../models/ticket';
 import { Order } from '../models/order';
 
+const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+
 const router = express.Router();
 
 router.post(
@@ -24,28 +26,27 @@ router.post(
 		if (!ticket) throw new NotFoundError();
 
 		// Make sure the ticket is not already reserved
-		// Find an order with the same ticket ID and
-		// make sure the order status is NOT cancelled
-		const existingOrder = await Order.findOne({
-			ticket,
-			status: {
-				$in: [
-					OrderStatus.Created,
-					OrderStatus.AwaitingPayment,
-					OrderStatus.Completed,
-				],
-			},
-		});
+		const isReserved = await ticket.isReserved();
 
-		if (existingOrder) throw new BadRequestError('Ticket is already reserved.');
+		if (isReserved) throw new BadRequestError('Ticket is already reserved.');
 
 		// Calculate an expiration date for this order
+		const expiration = new Date();
+		expiration.setSeconds(expiration.getSeconds() + EXPIRATION_WINDOW_SECONDS);
 
 		// Build the order and save it to DB
+		const order = Order.build({
+			userId: req.currentUser!.id,
+			status: OrderStatus.Created,
+			expiresAt: expiration,
+			ticket,
+		});
+
+		await order.save();
 
 		// TODO: Publish OrderCreated event
 
-		res.status(201).send('new order');
+		res.status(201).send(order);
 	}
 );
 
