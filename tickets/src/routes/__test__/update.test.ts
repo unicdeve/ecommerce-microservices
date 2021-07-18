@@ -1,7 +1,8 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import { app } from '../../app';
-import { Ticket } from '../../models/ticket';
+
+jest.mock('../../nats-wrapper.ts');
 
 it('returns status 404 if ticket is not found', async () => {
 	const cookie = global.signin();
