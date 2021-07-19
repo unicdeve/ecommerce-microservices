@@ -35,7 +35,7 @@ const OrderSchema = new mongoose.Schema(
 			default: OrderStatus.Created,
 		},
 
-		expires: {
+		expiresAt: {
 			type: mongoose.Schema.Types.Date,
 		},
 
