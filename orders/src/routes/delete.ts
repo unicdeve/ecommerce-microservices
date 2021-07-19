@@ -4,7 +4,9 @@ import {
 	requireAuth,
 } from '@unicdeve/common';
 import express, { Request, Response } from 'express';
+import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 import { Order, OrderStatus } from '../models/order';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -23,7 +25,12 @@ router.patch(
 		order.status = OrderStatus.Cancelled;
 		await order.save();
 
-		// TODO: publish OrderCancelledEvent
+		new OrderCancelledPublisher(natsWrapper.client).publish({
+			id: order.id,
+			ticket: {
+				id: order.ticket.id,
+			},
+		});
 
 		res.send(order);
 	}
