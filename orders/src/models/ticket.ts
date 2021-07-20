@@ -11,11 +11,16 @@ interface TicketAttrs {
 export interface TicketDoc extends mongoose.Document {
 	title: string;
 	price: number;
+	version: number;
 	isReserved(): Promise<boolean>;
 }
 
 interface TicketModel extends mongoose.Model<TicketDoc> {
 	build(attrs: TicketAttrs): TicketDoc;
+	findByEvent(event: {
+		id: string;
+		version: number;
+	}): Promise<TicketDoc | null>;
 }
 
 const ticketSchema = new mongoose.Schema(
@@ -66,6 +71,10 @@ ticketSchema.methods.isReserved = async function () {
 	});
 
 	return !!existingOrder;
+};
+
+ticketSchema.methods.findByEvent = async function ({ id, version }) {
+	return await Ticket.findOne({ _id: id, version: version - 1 });
 };
 
 const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);
