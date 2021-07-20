@@ -6,7 +6,7 @@ import {
 } from '@unicdeve/common';
 import { Message } from 'node-nats-streaming';
 import { Ticket } from '../../models/ticket';
-import { queueGroupName } from './queueGroupName';
+import { queueGroupName } from './queue-group-name';
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 	readonly subject = Subjects.OrderCreated;
@@ -26,7 +26,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 		// mark the ticket as being reserved by setting the orderId prop
 		currentTicket.set({ orderId: id });
 		// save the ticket
-		currentTicket.save();
+		await currentTicket.save();
 
 		// ack the message
 		msg.ack();
