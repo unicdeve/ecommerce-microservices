@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { OrderStatus } from '@unicdeve/common';
 import { TicketDoc } from './ticket';
+import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
 export { OrderStatus };
 interface OrderAttrs {
@@ -57,25 +58,26 @@ const orderSchema = new mongoose.Schema(
 );
 
 orderSchema.set('versionKey', 'version');
-orderSchema.pre('save', function (done) {
-	// @ts-ignore
-	this.$where = {
-		version: this.get('version') - 1,
-	};
+orderSchema.plugin(updateIfCurrentPlugin);
+// orderSchema.pre('save', function (done) {
+// 	// @ts-ignore
+// 	this.$where = {
+// 		version: this.get('version') - 1,
+// 	};
 
-	done();
-});
+// 	done();
+// });
 
 orderSchema.statics.build = (attrs: OrderAttrs) => {
 	return new Order(attrs);
 };
 
-orderSchema.statics.findByEvent = async function (event: {
-	id: string;
-	version: number;
-}) {
-	return Order.findOne({ _id: event.id, version: event.version - 1 });
-};
+// orderSchema.statics.findByEvent = async function (event: {
+// 	id: string;
+// 	version: number;
+// }) {
+// 	return Order.findOne({ _id: event.id, version: event.version - 1 });
+// };
 
 const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 
