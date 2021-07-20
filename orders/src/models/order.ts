@@ -22,7 +22,7 @@ interface OrderModel extends mongoose.Model<OrderDoc> {
 	build(attrs: OrderAttrs): OrderDoc;
 }
 
-const OrderSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
 	{
 		userId: {
 			type: String,
@@ -56,10 +56,27 @@ const OrderSchema = new mongoose.Schema(
 	}
 );
 
-OrderSchema.statics.build = (attrs: OrderAttrs) => {
+orderSchema.set('versionKey', 'version');
+orderSchema.pre('save', function (done) {
+	// @ts-ignore
+	this.$where = {
+		version: this.get('version') - 1,
+	};
+
+	done();
+});
+
+orderSchema.statics.build = (attrs: OrderAttrs) => {
 	return new Order(attrs);
 };
 
-const Order = mongoose.model<OrderDoc, OrderModel>('Order', OrderSchema);
+orderSchema.statics.findByEvent = async function (event: {
+	id: string;
+	version: number;
+}) {
+	return Order.findOne({ _id: event.id, version: event.version - 1 });
+};
+
+const Order = mongoose.model<OrderDoc, OrderModel>('Order', orderSchema);
 
 export { Order };
