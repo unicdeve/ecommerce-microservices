@@ -6,6 +6,7 @@ import {
 } from '@unicdeve/common';
 import { Message } from 'node-nats-streaming';
 import { Ticket } from '../../models/ticket';
+import { TicketUpdatedPublisher } from '../publishers/ticket-updated-publisher';
 import { queueGroupName } from './queue-group-name';
 
 export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
@@ -27,6 +28,15 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 		currentTicket.set({ orderId: id });
 		// save the ticket
 		await currentTicket.save();
+
+		await new TicketUpdatedPublisher(this.client).publish({
+			id: currentTicket.id,
+			price: currentTicket.price,
+			title: currentTicket.title,
+			userId: currentTicket.userId,
+			orderId: currentTicket.orderId,
+			version: currentTicket.version,
+		});
 
 		// ack the message
 		msg.ack();
