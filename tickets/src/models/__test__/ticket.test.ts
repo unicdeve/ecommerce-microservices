@@ -35,3 +35,14 @@ it('implements optimistic currency control', async () => {
 
 	throw new Error('Should not reach here');
 });
+
+it('increments the version number on multiple saves', async () => {
+	const ticket = await buildTicket();
+	expect(ticket.version).toEqual(0);
+
+	await ticket.save();
+	expect(ticket.version).toEqual(1);
+
+	await ticket.save();
+	expect(ticket.version).toEqual(2);
+});
