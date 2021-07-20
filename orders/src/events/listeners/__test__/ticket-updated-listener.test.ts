@@ -58,3 +58,15 @@ it('acks the message', async () => {
 	// write assertions to make sure ack fun was called
 	expect(msg.ack).toHaveBeenCalled();
 });
+
+it("doesn't call ack if the event is out of order", async () => {
+	const { listener, data, msg, ticket } = await setup();
+
+	data.version = 10;
+
+	try {
+		await listener.onMessage(data, msg);
+	} catch (err) {}
+
+	expect(msg.ack).not.toHaveBeenCalled();
+});
