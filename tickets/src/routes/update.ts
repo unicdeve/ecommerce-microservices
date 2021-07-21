@@ -3,6 +3,7 @@ import {
 	validateRequest,
 	NotFoundError,
 	NotAuthorizedError,
+	BadRequestError,
 } from '@unicdeve/common';
 import { body } from 'express-validator';
 import express, { Request, Response } from 'express';
@@ -31,6 +32,10 @@ router.put(
 
 		if (ticket.userId !== req.currentUser!.id) {
 			throw new NotAuthorizedError();
+		}
+
+		if (ticket.orderId) {
+			throw new BadRequestError('Cannot edit a reserved ticket');
 		}
 
 		ticket.set({
