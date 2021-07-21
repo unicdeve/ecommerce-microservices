@@ -35,7 +35,7 @@ build:
       sync:
         manual:
           - dest: .
-            src: '**/*.js'
+            src: '**/*.ts'
 
     - image: unicdev/orders
       context: orders
@@ -44,4 +44,13 @@ build:
       sync:
         manual:
           - dest: .
-            src: '**/*.js'
+            src: '**/*.ts'
+
+    - image: unicdev/expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: '**/*.ts'
