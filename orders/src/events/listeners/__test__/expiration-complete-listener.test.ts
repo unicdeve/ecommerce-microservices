@@ -40,3 +40,39 @@ const setup = async () => {
 
 	return { listener, data, msg, order, ticket };
 };
+
+it('updates the order status to cancelled', async () => {
+	const { listener, data, msg, order, ticket } = await setup();
+
+	// call the onMessage func with the data object + message obj
+	await listener.onMessage(data, msg);
+
+	const updatedOrder = await Order.findById(order.id);
+
+	expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
+});
+
+it('emit an OrderCancelled event', async () => {
+	const { listener, data, msg, order, ticket } = await setup();
+
+	// call the onMessage func with the data object + message obj
+	await listener.onMessage(data, msg);
+
+	expect(natsWrapper.client.publish).toHaveBeenCalled();
+
+	const publishedEventData = JSON.parse(
+		(natsWrapper.client.publish as jest.Mock).mock.calls[0][1]
+	);
+
+	expect(publishedEventData.id).toEqual(order.id);
+});
+
+it('acks the message', async () => {
+	const { listener, data, msg } = await setup();
+
+	// call the onMessage func with the data object + message obj
+	await listener.onMessage(data, msg);
+
+	// write assertions to make sure ack fun was called
+	expect(msg.ack).toHaveBeenCalled();
+});
