@@ -8,6 +8,8 @@ import {
 import { Message } from 'node-nats-streaming';
 import { queueGroupName } from './queue-group-names';
 import { Order } from '../../models/order';
+import { OrderCancelledPublisher } from '../publishers/order-cancelled-publisher';
+import { natsWrapper } from '../../nats-wrapper';
 
 export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent> {
 	readonly subject = Subjects.ExpirationComplete;
@@ -15,13 +17,19 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
 
 	async onMessage(data: ExpirationCompleteEvent['data'], msg: Message) {
 		const { orderId } = data;
-		const order = await Order.findById(orderId);
+		const order = await Order.findById(orderId).populate('ticket');
 
 		if (!order) throw new NotFoundError();
 
 		order.set({ status: OrderStatus.Cancelled });
 		await order.save();
 
-		// msg.ack();
+		await new OrderCancelledPublisher(natsWrapper.client).publish({
+			id: order.id,
+			version: order.version,
+			ticket: { id: order.ticket.id },
+		});
+
+		msg.ack();
 	}
 }
