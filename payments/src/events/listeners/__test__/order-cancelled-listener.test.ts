@@ -11,7 +11,7 @@ const setup = async () => {
 	const orderId = mongoose.Types.ObjectId().toHexString();
 	// create and save a ticket
 	const order = Order.build({
-		id: mongoose.Types.ObjectId().toHexString(),
+		id: orderId,
 		version: 0,
 		status: OrderStatus.Created,
 		price: 99.99,
@@ -22,7 +22,7 @@ const setup = async () => {
 	// create the fake data event
 	const data: OrderCancelledEvent['data'] = {
 		id: order.id,
-		version: order.version,
+		version: 1,
 		ticket: {
 			id: 'klnknd',
 		},
