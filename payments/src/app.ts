@@ -2,7 +2,7 @@ import express, { json } from 'express';
 import 'express-async-errors';
 import { errHandler, NotFoundError, currentUser } from '@unicdeve/common';
 import cookieSession from 'cookie-session';
-// import { createTicketRouter } from './routes/new';
+import { createChargeRouter } from './routes/new';
 // import { showTicketRouter } from './routes/show';
 // import { indexTicketRouter } from './routes';
 // import { updateTicketRouter } from './routes/update';
@@ -21,8 +21,8 @@ app.use(
 
 app.use(currentUser);
 
+app.use(createChargeRouter);
 // app.use(indexTicketRouter);
-// app.use(createTicketRouter);
 // app.use(showTicketRouter);
 // app.use(updateTicketRouter);
 

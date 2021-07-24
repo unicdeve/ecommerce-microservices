@@ -30,7 +30,6 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
 		});
 		await order.save();
 
-		// ack the message
 		msg.ack();
 	}
 }
