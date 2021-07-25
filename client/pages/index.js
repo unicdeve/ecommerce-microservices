@@ -1,5 +1,3 @@
-import buildClient from '../api/build-client';
-
 function Home({ currentUser }) {
 	console.log('on browser', currentUser);
 
@@ -14,14 +12,8 @@ function Home({ currentUser }) {
 	);
 }
 
-Home.getInitialProps = async (context) => {
-	const client = buildClient(context);
-
-	const { data } = await client.get('/api/users/current-user').catch((err) => {
-		console.log(err.response.data);
-	});
-
-	return data;
+Home.getInitialProps = async (context, axios, currentUser) => {
+	return {};
 };
 
 export default Home;
