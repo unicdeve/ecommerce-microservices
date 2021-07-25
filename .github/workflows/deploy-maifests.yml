@@ -15,4 +15,4 @@ jobs:
         with:
           token: ${{ DIGIALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save ticketing # your kube cluster name
-      - run: kubectl apply -f infra/**
+      - run: kubectl apply -f infra/k8s && kubectl apply -f infra/k8s-prod
