@@ -38,7 +38,7 @@ router.post(
 
 		const charge = await stripe.charges.create({
 			currency: 'usd',
-			amount: order.price * 100,
+			amount: parseFloat((order.price * 100).toFixed(2)),
 			source: token,
 		});
 
