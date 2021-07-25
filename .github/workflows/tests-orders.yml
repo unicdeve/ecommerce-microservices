@@ -4,11 +4,11 @@ on:
   push:
     branches: [master]
     paths:
-      - 'auth/**'
+      - 'orders/**'
   pull_request:
     branches: [master]
     paths:
-      - 'auth/**'
+      - 'orders/**'
 
 jobs:
   build:
