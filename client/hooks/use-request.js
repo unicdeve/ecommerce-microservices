@@ -9,9 +9,9 @@ export const useRequest = ({ url, method, initialState, onSuccess }) => {
 		setValues({ ...values, [e.target.name]: e.target.value });
 	};
 
-	const doRequest = async (e) => {
+	const doRequest = async (data) => {
 		try {
-			const res = await axios[method](url, values);
+			const res = await axios[method](url, data ? data : values);
 			setErrors(null);
 			onSuccess && onSuccess(res.data);
 			return res.data;
@@ -29,5 +29,5 @@ export const useRequest = ({ url, method, initialState, onSuccess }) => {
 		}
 	};
 
-	return { doRequest, errors, values, onChange };
+	return { doRequest, errors, values, onChange, setValues };
 };

@@ -2,11 +2,11 @@ import { useRequest } from '../../hooks/use-request';
 import router from 'next/router';
 
 const New = () => {
-	const { values, errors, onChange, doRequest } = useRequest({
+	const { values, errors, onChange, doRequest, setValues } = useRequest({
 		url: '/api/tickets',
 		method: 'post',
 		initialState: { title: '', price: '' },
-		onSuccess: (data) => router.push('/'),
+		onSuccess: (data) => null,
 	});
 
 	const { title, price } = values;
@@ -14,6 +14,12 @@ const New = () => {
 	const onSubmit = async (e) => {
 		e.preventDefault();
 		await doRequest();
+	};
+
+	const onBlur = () => {
+		const value = parseFloat(price);
+		if (isNaN(value)) return;
+		setValues({ ...values, price: value.toFixed(2) });
 	};
 
 	return (
@@ -37,6 +43,7 @@ const New = () => {
 					name='price'
 					className='form-control'
 					value={price}
+					onBlur={onBlur}
 					onChange={onChange}
 				/>
 			</div>
