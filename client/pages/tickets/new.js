@@ -6,7 +6,7 @@ const New = () => {
 		url: '/api/tickets',
 		method: 'post',
 		initialState: { title: '', price: '' },
-		onSuccess: (data) => null,
+		onSuccess: (data) => router.push('/'),
 	});
 
 	const { title, price } = values;
