@@ -15,7 +15,7 @@ function TicketDetail({ ticket }) {
 			<p>Price: ${ticket.price}</p>
 			{errors}
 			<button className='btn btn-primary' onClick={async () => doRequest()}>
-				Purchase
+				Create new
 			</button>
 		</div>
 	);
@@ -25,6 +25,8 @@ TicketDetail.getInitialProps = async (context, axios) => {
 	const { ticketId } = context.query;
 
 	const { data } = await axios.get(`/api/tickets/${ticketId}`);
+
+	console.log('data', data, ticketId);
 
 	return { ticket: data };
 };

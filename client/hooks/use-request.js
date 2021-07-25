@@ -16,6 +16,7 @@ export const useRequest = ({ url, method, initialState, onSuccess }) => {
 			onSuccess && onSuccess(res.data);
 			return res.data;
 		} catch (e) {
+			console.log(e);
 			setErrors(
 				<div className='alert alert-danger'>
 					<h4>Ooops...</h4>
