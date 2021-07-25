@@ -49,7 +49,7 @@ const New = () => {
 			</div>
 
 			{errors}
-			<button className='btn btn-primary mt-3'>Sign in</button>
+			<button className='btn btn-primary mt-3'>Purchase</button>
 		</form>
 	);
 };

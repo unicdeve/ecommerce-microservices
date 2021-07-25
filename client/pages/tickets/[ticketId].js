@@ -1,3 +1,4 @@
+import router from 'next/router';
 import { useRequest } from '../../hooks/use-request';
 
 function TicketDetail({ ticket }) {
@@ -5,7 +6,7 @@ function TicketDetail({ ticket }) {
 		url: '/api/orders',
 		method: 'post',
 		initialState: { ticketId: ticket.id },
-		onSuccess: (data) => console.log('order data', data),
+		onSuccess: (data) => router.push('/orders/[orderId]', `/orders/${data.id}`),
 	});
 
 	return (
