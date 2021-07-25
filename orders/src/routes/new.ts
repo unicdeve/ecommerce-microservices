@@ -30,6 +30,8 @@ router.post(
 		// Make sure the ticket is not already reserved
 		const isReserved = await ticket.isReserved();
 
+		console.log('isReserved', isReserved);
+
 		if (isReserved) throw new BadRequestError('Ticket is already reserved.');
 
 		// Calculate an expiration date for this order
