@@ -19,6 +19,6 @@ jobs:
       - run: docker push unicdev/orders
       - uses: digitalocean/action-doctl@v2
         with:
-          token: ${{ DIGIALOCEAN_ACCESS_TOKEN }}
+          token: ${{ secrets.DIGIALOCEAN_ACCESS_TOKEN }}
       - run: doctl kubernetes cluster kubeconfig save ticketing # your kube cluster name
       - run: kubectl rollout restart deployment orders-depl
