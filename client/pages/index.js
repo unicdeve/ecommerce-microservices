@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { useEffect } from 'react';
 import { useRequest } from '../hooks/use-request';
 
@@ -7,6 +8,11 @@ function Home({ currentUser, tickets }) {
 			<tr key={t.id}>
 				<td>{t.title}</td>
 				<td>{t.price}</td>
+				<td>
+					<Link href={`/tickets/[ticketId]}`} as={`/tickets/${t.id}`}>
+						<a>View</a>
+					</Link>
+				</td>
 			</tr>
 		);
 	});
@@ -20,6 +26,7 @@ function Home({ currentUser, tickets }) {
 					<tr>
 						<td>Title</td>
 						<td>Price</td>
+						<td>Link</td>
 					</tr>
 				</thead>
 
