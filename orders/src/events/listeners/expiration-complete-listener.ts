@@ -21,8 +21,8 @@ export class ExpirationCompleteListener extends Listener<ExpirationCompleteEvent
 
 		if (!order) throw new NotFoundError();
 
-		// TODO: integrate payment service to stop this
-		// from cancelling during after payment has been done
+		if (order.status === OrderStatus.Completed) return msg.ack();
+
 		order.set({ status: OrderStatus.Cancelled });
 		await order.save();
 
